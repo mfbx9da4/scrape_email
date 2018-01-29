@@ -1,0 +1,21 @@
+{
+  "name": "scrapeEmail",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "_mocha --watch"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "cheerio": "^1.0.0-rc.2",
+    "config": "^1.29.2",
+    "es6-promise": "^4.2.4",
+    "isomorphic-fetch": "^2.2.1",
+    "js-yaml": "^3.10.0",
+    "lodash": "^4.17.4",
+    "redis": "^2.8.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
+  }
+}

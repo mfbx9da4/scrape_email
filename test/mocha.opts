@@ -1,0 +1,5 @@
+--ui bdd
+--slow 70
+--growl
+--recursive
+--reporter spec
