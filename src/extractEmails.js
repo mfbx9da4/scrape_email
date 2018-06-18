@@ -12,8 +12,8 @@ function extractEmailsFromText (text) {
   let validMatches = []
 
   // TODO: this should be part of the regex
-  const imageExts = new Set(['JPG', 'JPEG', 'TIFF', 'GIF', 'BMP', 'PNG', 'PPM'])
-  const isImage = (email) => {
+  const imageExts = new Set(['JPG', 'JPEG', 'TIFF', 'GIF', 'BMP', 'PNG', 'PPM', 'CSS', 'XML', 'JS', 'JSON'])
+  const isAsset = (email) => {
     const parts = email.split('.')
     const last = parts[parts.length - 1].toUpperCase()
     return imageExts.has(last)
@@ -26,7 +26,7 @@ function extractEmailsFromText (text) {
       const lastIndex = parts.length - 1
       match = parts[lastIndex]
     }
-    if (!isImage(match)) {
+    if (!isAsset(match)) {
       validMatches.push(match)
     }
   }
