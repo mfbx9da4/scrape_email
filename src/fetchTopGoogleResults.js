@@ -7,35 +7,53 @@ const FETCH_TOP_X_RESULTS = config.get('google_search.fetch_top_x_results')
 
 function constructQueryUrl (query) {
   const base = '/search?q='
-  return `${BASE_URL}${base}${query}+contact`
+  return `${BASE_URL}${base}${encodeURIComponent(query)}+contact`
 }
 
-const fetchTopLinks = async (href) => {
-  let urlWithOutParams = href.split('&')[0]
-  let url = `${BASE_URL}${href}`
-  return fetchCachedUrl(url, urlWithOutParams)
+const fetchTopLinks = async (url) => {
+  return fetchCachedUrl(url)
 }
 
 async function fetchGoogle (query) {
   const url = constructQueryUrl(query)
-  return fetchCachedUrl(url)
+  let urlWithOutParams = url.split('&')[0]
+  return fetchCachedUrl(url, urlWithOutParams)
 }
 
-async function fetchTopGoogleResults (query) {
+function emitProgress (events, progress, message) {
+  const data = {
+    type: 'progress',
+    progress: progress,
+    total: FETCH_TOP_X_RESULTS + 1,
+    message: message || ''
+  }
+  if (events && typeof(events.emit) === 'function') {
+    events.emit('progress', data)
+  }
+}
+
+async function fetchTopGoogleResults (query, events) {
   // fetch google
   const text = await fetchGoogle(query)
+  emitProgress(events, 1, 'Fetched Google for ' + query)
 
   // extract top google results links
   const $ = cheerio.load(text);
   const links = $('h3 > a')
   const linkHrefs = []
   for (let i = 0; i < links.length; i++) {
-    linkHrefs.push($(links[i]).attr('href'))
+    let href = $(links[i]).attr('href')
+    let url = `${BASE_URL}${href}`
+    linkHrefs.push(url)
     if (i + 1 == FETCH_TOP_X_RESULTS) break
   }
 
   // fetch top results
-  let responses = await Promise.all(linkHrefs.map(fetchTopLinks))
+  let responses = await Promise.all(linkHrefs.map(async (link, i) => {
+    const text = await fetchTopLinks(link)
+    emitProgress(events, i + 2, `Fetched Link Number ${i + 1}, ${link}`)
+    return {link, text}
+  }))
   return responses
 }
 

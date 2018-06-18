@@ -1,4 +1,5 @@
 ## Scrape emails
+
 - Provide either a json file with list of names
 - Scrapes google first page for `${name} contact`  @
 - Then scrapes first few links until it finds @ on page
@@ -7,7 +8,7 @@
 
 part 1 - save html files:
 - create html files for all google pages and top results
-- in parallel 
+- in parallel
 - would be faster to store in db
 
 part 2 - read each html file:
@@ -17,14 +18,21 @@ part 2 - read each html file:
 
 Always prefix functions and files with either `fetchBar` or `extractFoo`
 
-## Install 
+## Getting Started
 
 requries docker and docker compose
 
     docker-compose up
     yarn
 
-## Run
+Use for debugging values
+
+    npm install -g redis-commander
+    redis-commander
+
+## Run Once
+
+See package.json for scripts
 
     node index.js
 
@@ -45,3 +53,8 @@ requries docker and docker compose
 ## API
 - Get email for query
 - Get email for list of queries
+
+
+## TODO
+- Support upload csv native upload
+- Support download

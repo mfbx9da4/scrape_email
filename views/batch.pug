@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title} 🎉
+  #drop-area
+    h3 Drag and Drop Files Here
+    input(type='file')
+  .res
+  script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+  script(src='/js/dm-uploader.js')
+  script(src='/js/main.js')
+

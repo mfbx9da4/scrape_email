@@ -8,17 +8,12 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const compression = require('compression')
-
 const app = express()
-app.use(compression())
-
 const index = require('./routes/index')
 
-// catch errors not caught in promise chain
-process.stderr.on('data', data => {
-  console.error(`uncaught error: ${data}`)
-})
+app.use(compression())
 
+// catch errors not caught in promise chain
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 });

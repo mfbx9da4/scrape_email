@@ -3,6 +3,7 @@
 const redis = require('../redis')
 
 module.exports = {
+  redis: redis,
   flush: () => {
     return redis.flushallAsync()
       .then(res => {
@@ -14,6 +15,7 @@ module.exports = {
   },
   keys: async (pattern) => redis.keysAsync(pattern),
   ttl: async (key) => redis.ttlAsync(key),
+  exec: async (key) => redis.execAsync(key),
   get: async (key) => redis.getAsync(key),
   set: async (key, value, CMD, CMD_VAL) => {
     return redis.setAsync(key, value, CMD, CMD_VAL)

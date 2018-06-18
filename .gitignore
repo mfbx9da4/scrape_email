@@ -39,3 +39,6 @@ newrelic_agent.log
 
 .vagrant
 Vagrantfile
+
+cached_pages
+_misc.js
