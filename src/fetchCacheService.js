@@ -9,13 +9,20 @@ const save_to_disk = config.get('save_to_disk')
 
 async function fetchCachedUrl (url, key) {
   key = key || url
-  let text = await redis.getAsync(key)
+
+  let text
+  if (redis.connected) {
+    text = await redis.getAsync(key)
+  }
+
   if (!text) {
     // miss
     try {
       const res = await fetch(url)
       text = await res.text()
-      await redis.setAsync(url, text, 'EX', CACHE_EXPIRATION)
+      if (redis.connected) {
+        await redis.setAsync(url, text, 'EX', CACHE_EXPIRATION)
+      }
     } catch (err) {
       console.info('Error fetching', url, err);
       return 'ERROR_FETCHING_RESOURCE'

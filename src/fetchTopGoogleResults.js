@@ -44,6 +44,12 @@ async function fetchTopGoogleResults (query, events) {
   for (let i = 0; i < links.length; i++) {
     let href = $(links[i]).attr('href')
     let url = `${BASE_URL}${href}`
+
+    // Some are absolute urls
+    if (href.indexOf('http') === 0) {
+      url = href
+    }
+
     linkHrefs.push(url)
     if (i + 1 == FETCH_TOP_X_RESULTS) break
   }

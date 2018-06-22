@@ -24,13 +24,13 @@ router.get(routes.batch, (req, res) => {
  */
 
 router.get(routes.queryByEmail, async (req, res) => {
-  const out = await scrapeByQuery(req.query.q)
+  const out = await scrapeByQuery(req.query.q, events)
   res.json(out)
 })
 
-router.post(routes.queryByEmailBatch, multipartMiddleware, async (req, res, err) => {
+router.post(routes.queryByEmailBatch, multipartMiddleware, async (req, res, next) => {
   console.log('req.files', req.files)
-  const batchId = 'UUID1234' + Date.now()
+  const batchId = 'BATCHUUID' + Date.now()
 
   let total_started = 0
   let total_finished = 0
@@ -40,10 +40,15 @@ router.post(routes.queryByEmailBatch, multipartMiddleware, async (req, res, err)
   csv
     .fromPath(req.files.file.path)
     .on("error", async function (err){
-      next(err)
+      const message = {type: "error", message: "Error with file format. Should be a csv."}
+      message.raw = err.message
+      setTimeout(function() {
+        events.emit(`batch_progress:${batchId}`, message)
+      }, 1000)
     })
     .on("data", async function (data){
       const query = data[0]
+      if (!query) return
       total_started += 1
       const emails = await scrapeByQuery(query, events)
       const item = {query, emails}

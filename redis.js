@@ -11,7 +11,7 @@ client = Redis.createClient(
 )
 
 client.on('error', err => {
-  console.log(`Redis error ${err}`)
+  console.log(`redis.js:Redis ${err}`)
 })
 
 module.exports = client

@@ -8,8 +8,11 @@ async function scrapeByQuery (query, events) {
   let responses, emails
   responses = await fetchTopGoogleResults(query, events)
   emails = await extractEmails(responses, events)
-  // TODO: should emit event instead of updating db directly
-  await set(query, JSON.stringify(emails), 'EX', 24 * 60 * 60 * 7)
+  events.emit('end', {type: 'end', query, emails});
+  if (redis.connected) {
+    await set(query, JSON.stringify(emails), 'EX', 24 * 60 * 60 * 7)
+  }
+
   return emails
 }
 

@@ -18,6 +18,11 @@ process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 });
 
+process.on('uncaughtException', (err) => {
+  console.log('uncaughtException: ', err)
+  console.log(err.stack)
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
