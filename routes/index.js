@@ -12,7 +12,7 @@ const events = require('../src/ScrapeEvents')
 const {scrapeByQuery} = require('../src/scrapeEmails')
 
 router.get(routes.home, (req, res) => {
-  res.render('index', { title: 'Home' })
+  res.render('index', { title: 'Single Query' })
 })
 
 router.get(routes.batch, (req, res) => {

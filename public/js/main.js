@@ -1,4 +1,4 @@
-var exampleSocket = new WebSocket("ws://localhost:3000/", []);
+var exampleSocket = new WebSocket("ws://" + location.hostname + ":3000/", []);
 
 exampleSocket.onerror = function (event) {
   alert('Error websocket ' + event.message)
@@ -9,15 +9,18 @@ exampleSocket.onclose = function (event) {
   res.innerHTML = '<b>😫 Lost connection</b>' + res.innerHTML
 }
 
+window.clear = function() {
+  document.querySelector('.res').innerHTML = ''
+}
+
 exampleSocket.onmessage = function (event) {
   var res = document.querySelector('.res')
   var data = JSON.parse(event.data)
   var string = JSON.stringify(data, null, 2)
   if (data.progress === 0) {
-    res.innerHTML = ''
-  } else {
-    res.innerHTML = '<pre class="ws-message ' + event.type + '">' + string +'</pre>' + res.innerHTML
+    res.innerHTML = '<hr />' + res.innerHTML
   }
+  res.innerHTML = '<pre class="ws-message ' + event.type + '">' + string +'</pre>' + res.innerHTML
   console.log(string);
 }
 

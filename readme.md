@@ -33,9 +33,11 @@ Use for debugging values
 ## Deploying
 
 
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#docker-basics-create-image
+
 	╰─$ aws ecr get-login --no-include-email --region eu-west-2
 	## paste output to login
-	╰─$ docker tag email_leads:latest 016582366134.dkr.ecr.eu-west-2.amazonaws.com/scrape_email:latest
+	╰─$ docker tag scrape_email:latest 016582366134.dkr.ecr.eu-west-2.amazonaws.com/scrape_email:latest
 	╰─$ docker push 016582366134.dkr.ecr.eu-west-2.amazonaws.com/scrape_email:latest
 
 ## Run Once
@@ -43,6 +45,11 @@ Use for debugging values
 See package.json for scripts
 
     node index.js
+
+## Testing docker locally
+
+    docker build -t scrape_email .
+    docker run -p 49160:3001 3000:3000 -d scrape_email
 
 ## Streamlining: When to update db?
 

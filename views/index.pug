@@ -2,8 +2,18 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title} 🎉
-  input(value='oftn inc' onchange='window.onChangeString(event)')
+  p Type any query below, we will return emails for that query.
+  p
+    strong How this works?
+    |  We will search google with a given query. We will open the top 5 results and scrape each page for email addresses.
+  form
+    .form-row.align-items-center
+      .col-auto
+        label.sr-only(for='inlineFormInput') Name
+        input#inlineFormInput.form-control.mb-2(type='text', value='oftn inc')
+      .col-auto
+        button.btn.btn-primary.mb-2(onclick="window.clear()") Clear
+
   .res
   script(src='/js/main.js')
 

@@ -19,6 +19,14 @@ wss.on('connection', function connection(ws, req) {
   ws.on('pong', heartbeat);
   ws.id = 'wsid:' + wss.clients.size
 
+  events.on('end', (data) => {
+    ws.json(data)
+  });
+
+  events.on('progress', (data) => {
+    ws.json(data)
+  });
+
   wss.clients.forEach(function each(client) {
     console.info('client', client.id, client.readyState === WebSocket.OPEN);
   });
@@ -30,8 +38,9 @@ wss.on('connection', function connection(ws, req) {
     if (!data.type) {
       throw new Error(`No result type specified ${JSON.stringify(data, null, 2)}`)
     }
+    data.wsClientId = ws.id
     if (ws.readyState === WebSocket.OPEN) {
-      return ws.send(JSON.stringify(data))
+      ws.send(JSON.stringify(data))
     } else {
       // console.log('dont send', data.type, 'to', ws.id)
     }
@@ -71,14 +80,7 @@ const interval = setInterval(function ping() {
 }, 30000);
 
 async function handleQueryByEmail (path, query, ws) {
-  events.on('end', (data) => {
-    ws.json(data)
-  });
-  events.on('progress', (data) => {
-    ws.json(data)
-  });
-  events.emit('progress', {type: 'progress', progress: 0, total: -1});
-
+  events.emit('progress', {type: 'progress', query, progress: 0, total: -1});
   console.log('path, query', path, query)
   const emails = await scrapeByQuery(query, events)
 }

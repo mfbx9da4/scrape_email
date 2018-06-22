@@ -2,7 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title} 🎉
+  p Upload a csv or text file with a list of queries. There should be one query per line.
+  p
+    strong How this works?
+    |  We will search google with a given query. We will open the top 5 results and scrape each page for email addresses.
   #drop-area
     h3 Drag and Drop Files Here
     input(type='file')
