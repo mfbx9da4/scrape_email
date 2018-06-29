@@ -1,6 +1,7 @@
 redis:
   port: 6379
   host: localhost
+  docker_compose_host: redis
 
 port: 3001
 wsport: 3000

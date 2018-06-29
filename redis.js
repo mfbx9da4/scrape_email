@@ -6,9 +6,14 @@ bluebird.promisifyAll(Redis.Multi.prototype);
 
 let client = null
 
-client = Redis.createClient(
-  config.get('redis')
-)
+const params = JSON.parse(JSON.stringify(config.get('redis')))
+
+if (process.env.IS_USING_DOCKER_COMPOSE) {
+	params.host = params.docker_compose_host
+}
+delete params.docker_compose_host
+
+client = Redis.createClient(params)
 
 client.on('error', err => {
   console.log(`redis.js:Redis ${err}`)

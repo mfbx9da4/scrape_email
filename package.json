@@ -7,7 +7,8 @@
     "start": "node bin/www",
     "dev": "nodemon ./bin/www",
     "runOnce": "node index.js",
-    "test": "_mocha --watch"
+    "test": "_mocha --watch",
+    "prod": "forever ./bin/www"
   },
   "dependencies": {
     "bluebird": "^3.5.1",
@@ -21,6 +22,7 @@
     "es6-promise": "^4.2.4",
     "express": "^4.16.2",
     "fast-csv": "^2.4.1",
+    "forever": "^0.15.3",
     "isomorphic-fetch": "^2.2.1",
     "js-yaml": "^3.10.0",
     "lodash": "^4.17.5",

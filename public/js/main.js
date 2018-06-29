@@ -1,19 +1,39 @@
-var exampleSocket = new WebSocket("ws://" + location.hostname + ":3000/", []);
+window.socket = {isFirstTime: true}
+function connectToWebSocket () {
+  window.socket = new WebSocket("ws://" + location.hostname + ":3000/", []);
+}
 
-exampleSocket.onerror = function (event) {
+function retryConnectWebSocket () {
+  if (socket.isFirstTime || socket.readyState !== socket.OPEN) {
+    connectToWebSocket()
+    setTimeout(retryConnectWebSocket, 1000)
+  } else {
+    console.log('now connected')
+    onConnected()
+  }
+}
+retryConnectWebSocket()
+
+socket.onerror = function (event) {
   alert('Error websocket ' + event.message)
 }
 
-exampleSocket.onclose = function (event) {
-  var res = document.querySelector('.res')
-  res.innerHTML = '<b>😫 Lost connection</b>' + res.innerHTML
+socket.onclose = function (event) {
+  var res = document.querySelector('.connection-info')
+  res.innerHTML = '<b>😫 Lost connection</b>'
+  retryConnectWebSocket()
+}
+
+function onConnected () {
+ var res = document.querySelector('.connection-info')
+ res.innerHTML = '<b>🎉 Connected!</b>'
 }
 
 window.clear = function() {
   document.querySelector('.res').innerHTML = ''
 }
 
-exampleSocket.onmessage = function (event) {
+socket.onmessage = function (event) {
   var res = document.querySelector('.res')
   var data = JSON.parse(event.data)
   var string = JSON.stringify(data, null, 2)
@@ -21,11 +41,11 @@ exampleSocket.onmessage = function (event) {
     res.innerHTML = '<hr />' + res.innerHTML
   }
   res.innerHTML = '<pre class="ws-message ' + event.type + '">' + string +'</pre>' + res.innerHTML
-  console.log(string);
+  console.log(data.type);
 }
 
 function send (data) {
-    exampleSocket.send(JSON.stringify(data))
+  socket.send(JSON.stringify(data))
 }
 
 setTimeout(() => {
@@ -41,9 +61,8 @@ function onStartBatch (batchId) {
   send({path: '/api/v1/batch_progress', query: batchId})
 }
 
-if ($) {
+if (window.$) {
   $(document).ready(function () {
-    console.info('called');
     $("#drop-area").dmUploader({
       url: '/api/v1/search/emailBatch',
 

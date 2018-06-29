@@ -37,6 +37,7 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html#d
 
 	╰─$ aws ecr get-login --no-include-email --region eu-west-2
 	## paste output to login
+    ╰─$ docker build -t scrape_email .
 	╰─$ docker tag scrape_email:latest 016582366134.dkr.ecr.eu-west-2.amazonaws.com/scrape_email:latest
 	╰─$ docker push 016582366134.dkr.ecr.eu-west-2.amazonaws.com/scrape_email:latest
 

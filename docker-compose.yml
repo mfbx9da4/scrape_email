@@ -4,3 +4,18 @@ services:
     image: "redis:alpine"
     ports:
      - "6379:6379"
+  webapp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: scrape_email_composed
+    volumes:
+      - ./:/usr/src/app:ro
+    depends_on:
+     - redis
+    ports:
+      - "80:3001"
+      - "3000:3000"
+    environment:
+      - IS_USING_DOCKER_COMPOSE=TRUE
+
