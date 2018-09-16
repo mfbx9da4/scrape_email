@@ -18,7 +18,7 @@ async function scrapeByQuery (query, events) {
 
 async function scrapeByQueries (queries, events) {
   return Promise.all(queries.map((query) => {
-    scrapeByQuery(query, events)
+    return scrapeByQuery(query, events)
   }))
 }
 

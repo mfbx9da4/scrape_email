@@ -20,9 +20,10 @@ async function fetchGoogle (query) {
   return fetchCachedUrl(url, urlWithOutParams)
 }
 
-function emitProgress (events, progress, message) {
+function emitProgress (events, progress, message, query) {
   const data = {
     type: 'progress',
+    query,
     progress: progress,
     total: FETCH_TOP_X_RESULTS + 1,
     message: message || ''
@@ -35,7 +36,7 @@ function emitProgress (events, progress, message) {
 async function fetchTopGoogleResults (query, events) {
   // fetch google
   const text = await fetchGoogle(query)
-  emitProgress(events, 1, 'Fetched Google for ' + query)
+  emitProgress(events, 1, 'Fetched Google for ' + query, query)
 
   // extract top google results links
   const $ = cheerio.load(text);
@@ -57,7 +58,7 @@ async function fetchTopGoogleResults (query, events) {
   // fetch top results
   let responses = await Promise.all(linkHrefs.map(async (link, i) => {
     const text = await fetchTopLinks(link)
-    emitProgress(events, i + 2, `Fetched Link Number ${i + 1}, ${link}`)
+    emitProgress(events, i + 2, `Fetched Link Number ${i + 1}, ${link}`, query)
     return {link, text}
   }))
   return responses

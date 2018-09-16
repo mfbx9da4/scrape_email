@@ -3,6 +3,8 @@ const _ = require('lodash')
 function extractEmailsFromText (text) {
   // const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}/gi
   // const emailRegex = /[a-zA-Z0-9.\-_+#~!$&\',;=:]+@[A-Z0-9.-]+\.[A-Z]{2,4}/gi
+  // [a-zA-Z0-9.\-_+#~!$&\']+(@|at|\s?\(?\s?(at|AT)\s?\)?\s?| )[a-z0-9.-]+\.[a-z]{2,3}
+  // something(at)gmail.com something ( AT ) gmail.com
   // for ref https://stackoverflow.com/a/2049510/1376627
   const emailRegex = /[a-zA-Z0-9.\-_+#~!$&\']+@[A-Z0-9.-]+\.[A-Z]{2,4}/gi
   // Remove encoding of the href

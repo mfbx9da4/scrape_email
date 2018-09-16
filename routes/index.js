@@ -42,6 +42,7 @@ router.post(routes.queryByEmailBatch, multipartMiddleware, async (req, res, next
     .on("error", async function (err){
       const message = {type: "error", message: "Error with file format. Should be a csv."}
       message.raw = err.message
+      // Delay as the client might not be connected yet
       setTimeout(function() {
         events.emit(`batch_progress:${batchId}`, message)
       }, 1000)
